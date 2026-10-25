@@ -1,0 +1,158 @@
+# Signs and publishes a draft release that lika's `make release` uploaded
+# (Lin-creator/lika#51). `make release` starts this workflow itself, since
+# GitHub runs no workflow when a draft is created.
+#
+# This repository is public, and so are these logs. Nothing here may print a
+# secret: no `set -x`, and secrets reach commands only through environment
+# variables or files, never through ${{ }} in a script.
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The draft release's tag, e.g. v1.0.0-beta.1"
+        required: true
+      dry_run:
+        description: "Sign and check only: publish nothing, keep the signed zip as a workflow artifact"
+        type: boolean
+        default: false
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  TAG: ${{ inputs.tag }}
+  GH_TOKEN: ${{ github.token }}
+  GH_REPO: ${{ github.repository }}
+  IDENTITY: lika Release Signing
+  # Only sign_update is used from it. Update the hash with the version.
+  SPARKLE_VERSION: 2.10.0
+  SPARKLE_SHA256: c2bf58aa8387266ac179357b1415d6f2635f044da8be41042af32425dae6da0c
+
+jobs:
+  release:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check the tag and fetch the draft
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)(-[0-9A-Za-z.-]+)?$ ]] || { echo "::error::'$TAG' is not a vX.Y.Z[-pre] tag"; exit 1; }
+          short="${BASH_REMATCH[1]}"
+          echo "VERSION=${TAG#v}" >> "$GITHUB_ENV"
+          [[ "$(gh release view "$TAG" --json isDraft --jq .isDraft)" == true ]] || { echo "::error::$TAG is not a draft release"; exit 1; }
+          gh release view "$TAG" --json body --jq .body > notes.md
+          gh release download "$TAG" --pattern lika-unsigned.zip --dir work
+          ditto -x -k work/lika-unsigned.zip work
+          plist=work/lika.app/Contents/Info.plist
+          [[ "$(/usr/libexec/PlistBuddy -c 'Print CFBundleShortVersionString' "$plist")" == "$short" ]] || { echo "::error::the app's version doesn't match $TAG"; exit 1; }
+          echo "BUILD=$(/usr/libexec/PlistBuddy -c 'Print CFBundleVersion' "$plist")" >> "$GITHUB_ENV"
+          echo "MINIMUM_SYSTEM=$(/usr/libexec/PlistBuddy -c 'Print LSMinimumSystemVersion' "$plist")" >> "$GITHUB_ENV"
+
+      # A temporary keychain holds the identity, and the certificate is trusted
+      # for code signing, without which codesign finds no identity (Lin-creator/lika#54).
+      - name: Set up the signing keychain
+        env:
+          P12: ${{ secrets.LIKA_SIGNING_P12 }}
+          P12_PASSWORD: ${{ secrets.LIKA_SIGNING_P12_PASSWORD }}
+        run: |
+          set -euo pipefail
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          keychain_password="$(openssl rand -hex 24)"
+          echo "::add-mask::$keychain_password"
+          printf '%s' "$P12" | base64 --decode > "$RUNNER_TEMP/signing.p12"
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 900 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          security import "$RUNNER_TEMP/signing.p12" -k "$keychain" -P "$P12_PASSWORD" -T /usr/bin/codesign > /dev/null
+          rm "$RUNNER_TEMP/signing.p12"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$keychain_password" "$keychain" > /dev/null
+          security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
+          security find-certificate -c "$IDENTITY" -p "$keychain" > "$RUNNER_TEMP/signing.pem"
+          sudo security add-trusted-cert -d -r trustRoot -p codeSign -k "$keychain" "$RUNNER_TEMP/signing.pem"
+          security find-identity -v -p codesigning "$keychain" | grep -q "\"$IDENTITY\"" || { echo "::error::no valid '$IDENTITY' identity"; exit 1; }
+          echo "KEYCHAIN=$keychain" >> "$GITHUB_ENV"
+
+      # Inside out: Sparkle's helpers, Sparkle.framework, then lika.app. No
+      # hardened runtime, which would need a microphone entitlement, and no
+      # timestamp, which only Apple's certificates get.
+      - name: Code-sign
+        run: |
+          set -euo pipefail
+          sign() { codesign --force --timestamp=none --keychain "$KEYCHAIN" --sign "$IDENTITY" "$@"; }
+          app=work/lika.app
+          sparkle=$app/Contents/Frameworks/Sparkle.framework
+          if [[ -d "$sparkle" ]]; then
+            sign "$sparkle/Versions/B/XPCServices/Installer.xpc"
+            sign --preserve-metadata=entitlements "$sparkle/Versions/B/XPCServices/Downloader.xpc"
+            sign "$sparkle/Versions/B/Autoupdate"
+            sign "$sparkle/Versions/B/Updater.app"
+            sign "$sparkle"
+          fi
+          sign "$app"
+          codesign --verify --strict --deep --verbose=2 "$app"
+          codesign --display --requirements - "$app"
+
+      - name: Zip and sign for Sparkle
+        env:
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          zip="lika-$VERSION.zip"
+          ditto -c -k --sequesterRsrc --keepParent work/lika.app "$zip"
+          curl -fsSL -o sparkle.tar.xz "https://github.com/sparkle-project/Sparkle/releases/download/$SPARKLE_VERSION/Sparkle-$SPARKLE_VERSION.tar.xz"
+          echo "$SPARKLE_SHA256  sparkle.tar.xz" | shasum -a 256 --check
+          mkdir sparkle && tar -xf sparkle.tar.xz -C sparkle
+          signature="$(printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | sparkle/bin/sign_update --ed-key-file - -p "$zip")"
+          echo "ZIP=$zip" >> "$GITHUB_ENV"
+          echo "SIGNATURE=$signature" >> "$GITHUB_ENV"
+          echo "LENGTH=$(stat -f %z "$zip")" >> "$GITHUB_ENV"
+
+      - name: Keep the signed zip (dry run)
+        if: inputs.dry_run
+        uses: actions/upload-artifact@v4
+        with:
+          name: lika-${{ env.VERSION }}-dry-run
+          path: lika-*.zip
+
+      - name: Publish the release
+        if: ${{ !inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          gh release upload "$TAG" "$ZIP" --clobber
+          gh release delete-asset "$TAG" lika-unsigned.zip --yes
+          if [[ "$VERSION" == *-* ]]; then
+            gh release edit "$TAG" --draft=false --prerelease --latest=false
+          else
+            gh release edit "$TAG" --draft=false --latest
+          fi
+
+      - name: Add it to the appcast
+        if: ${{ !inputs.dry_run }}
+        run: |
+          set -euo pipefail
+          git fetch origin gh-pages
+          git worktree add pages origin/gh-pages
+          python3 scripts/appcast.py pages/appcast.xml \
+            --version "$VERSION" --build "$BUILD" --minimum-system "$MINIMUM_SYSTEM" \
+            --url "https://github.com/$GH_REPO/releases/download/$TAG/$ZIP" \
+            --length "$LENGTH" --signature "$SIGNATURE" --notes notes.md
+          cd pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add appcast.xml
+          git commit -m "Appcast: lika $VERSION"
+          git push origin HEAD:gh-pages
+
+      - name: Remove the signing keychain
+        if: always()
+        run: |
+          [[ -n "${KEYCHAIN:-}" ]] && security delete-keychain "$KEYCHAIN" || true
+          rm -f "$RUNNER_TEMP/signing.p12" "$RUNNER_TEMP/signing.pem"
