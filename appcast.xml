@@ -5,5 +5,30 @@
     <link>https://lin-creator.github.io/lika-releases/appcast.xml</link>
     <description>Updates for lika.</description>
     <language>en</language>
+    <item>
+      <title>1.0.0-beta.1</title>
+      <pubDate>Mon, 26 Oct 2026 00:48:49 GMT</pubDate>
+      <sparkle:version>76</sparkle:version>
+      <sparkle:shortVersionString>1.0.0-beta.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <description sparkle:format="markdown"><![CDATA[### Added
+
+- The first beta of lika: live processing for up to two microphones on an Apple Silicon Mac, adding 0 ms of Processing Latency.
+- Each Mic Channel has gain, a Feedback Suppressor, an EQ, a compressor and a de-esser, plus a send to the shared Reverb Bus. An always-on limiter and Mute (⌃⌥M) protect the output.
+- The Overlay stays above fullscreen video: one row with the preset button, a Mic Badge per Mic Channel, the master output control and the settings icon. Hovering a Mic Badge opens its Quick Controls, and the Overlay Message shows what needs your attention.
+- The Settings Window has Devices, Effects, Master output, Presets, General and Updates pages. Devices shows the latency breakdown and can measure Round-Trip Latency.
+- Presets: the Session Slot plus three Preset Slots, kept across relaunches.
+- lika follows your Input Device and Output Device when they change or disappear, and mutes itself when a pinned device goes missing.
+- Updates: lika checks for a new version at launch and when you ask, downloads it in the background, and installs it when you quit, or at once from the "lika X is ready" Overlay Message. It never installs while lika runs.
+- The Updates page in the Settings Window shows the version and build, "Check for updates", when lika last checked, the "Check automatically at launch" and "Include betas" switches, and the release notes of every newer Release.
+- If lika runs from outside Applications, an Overlay Message offers to move it there, so that it can receive Updates.
+- At launch lika asks for microphone permission if macOS hasn't asked yet. When it's denied, an error Overlay Message says lika can't hear, and its System Settings button opens Privacy & Security → Microphone.
+
+### Changed
+
+- lika's bundle identifier is now `com.lpi.lika`, so macOS asks once more for microphone permission.]]></description>
+      <enclosure url="https://github.com/Lin-creator/lika-releases/releases/download/v1.0.0-beta.1/lika-1.0.0-beta.1.zip" length="4898752" type="application/octet-stream" sparkle:edSignature="ihbLaoNGkyCKuOW3UwWovUfQ8NoSV0S//+K19FxB+ADLBCpKsOe263YrIs7EIfhqs3BZhN9ChVChP/v28gY6CA=="/>
+    </item>
   </channel>
 </rss>
