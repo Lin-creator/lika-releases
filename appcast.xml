@@ -6,6 +6,18 @@
     <description>Updates for lika.</description>
     <language>en</language>
     <item>
+      <title>1.0.0-beta.2</title>
+      <pubDate>Tue, 27 Oct 2026 00:24:19 GMT</pubDate>
+      <sparkle:version>79</sparkle:version>
+      <sparkle:shortVersionString>1.0.0-beta.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>beta</sparkle:channel>
+      <description sparkle:format="markdown"><![CDATA[### Fixed
+
+- The Overlay and the Settings Window stayed empty when lika ran straight from Downloads or from any folder under `/private`, as macOS does with a freshly downloaded app.]]></description>
+      <enclosure url="https://github.com/Lin-creator/lika-releases/releases/download/v1.0.0-beta.2/lika-1.0.0-beta.2.zip" length="4899025" type="application/octet-stream" sparkle:edSignature="0pQCJhNRSsk3c027omsKuIeXX+WV2FQ3IC1l16XoLhlQnly8MYFmkV9gEsyUnEupi1sujFpgANbEDAkI+YaxCQ=="/>
+    </item>
+    <item>
       <title>1.0.0-beta.1</title>
       <pubDate>Mon, 26 Oct 2026 00:48:49 GMT</pubDate>
       <sparkle:version>76</sparkle:version>
