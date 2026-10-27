@@ -6,6 +6,65 @@
     <description>Updates for lika.</description>
     <language>en</language>
     <item>
+      <title>1.0.0</title>
+      <pubDate>Tue, 27 Oct 2026 12:32:48 GMT</pubDate>
+      <sparkle:version>88</sparkle:version>
+      <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description sparkle:format="markdown"><![CDATA[The first Release of lika: live effects for up to two karaoke microphones on an Apple Silicon Mac, sitting above whatever you sing along to and adding under 0.1 ms of Processing Latency.
+
+### Added
+
+#### Microphones and sound
+
+- Up to two Mic Channels, each mapped onto an Input Channel of your Input Device, with its own gain, EQ, compressor and de-esser and a send to the shared Reverb Bus. Every effect works sample by sample, with no look-ahead.
+- The EQ has a low cut or shelf, three bells and a high shelf or cut. Cuts are 12, 18 or 24 dB/oct, and the EQ amount morphs every band towards flat.
+- The Reverb Bus is one reverb that every Mic Channel feeds, with its own decay and settings.
+- The Output ends in a 19 kHz low pass and a limiter that caps it at −1 dBFS, always on and with no look-ahead.
+- Bypass passes every Mic Channel through with its gain only, and Channel Bypass does that for one Mic Channel. Both fade over 50 ms.
+- Mute (⌃⌥M, or a hotkey of your choice) silences everything at once, as an emergency stop for a howl. Channel Mute silences one Mic Channel.
+- lika runs at 96 kHz and a 64-sample buffer by default, the lowest Device Latency that runs clean with every effect on.
+
+#### Feedback protection
+
+- The Feedback Suppressor finds a howl while you sing and cuts just that frequency until the howl has gone, telling it apart from a held sung note. There is one on each Mic Channel and a less sensitive one on the master mix. It catches high howls soonest, cuts up to 30 dB deep and lets go within 5 s of the howl stopping. One sensitivity setting drives them all, and it keeps working in Bypass.
+- The Mic Badges and the master control glow green, amber or red with how hard the Feedback Suppressor is cutting.
+- Room Tune, on the Master output page: hold a microphone in front of the speaker, click Tune, and for 15 s from the first howl lika notes where the Feedback Suppressor had to cut. It then cuts the master mix there by up to 12 dB, the worst frequencies the most. It belongs to the room rather than a Preset, is kept until you tune again or delete it, and Bypass skips it.
+- The Master output page shows what each Feedback Suppressor hears and which frequencies it is cutting, live.
+
+#### The Overlay
+
+- The Overlay stays above fullscreen video in a screen corner of your choice: the preset button, a Mic Badge per Mic Channel, the master output control and the settings icon.
+- A Mic Badge's ring shows its Mic Channel's level. Scroll or drag it to change the gain, and click it for Channel Mute.
+- Hovering a Mic Badge opens its Quick Controls: one slider and switch per effect, and Channel Bypass.
+- The Overlay Message shows what needs your attention, one message at a time.
+- An optional latency mark in the master control's ring colours with the Round-Trip Latency, green when it is low.
+
+#### The Settings Window
+
+- Devices, Effects, Master output, Presets, General and Updates pages, shaped like macOS System Settings.
+- Devices: pick the Input Device, map each Mic Channel, pick the Output pair and buffer size, see the latency broken down, measure the Round-Trip Latency and watch the DSP load.
+- Effects: a tab per Mic Channel and one for the Reverb Bus. The EQ curve's handles drag, scroll and double-click. The compressor and de-esser curves show what they are doing right now, and the EQ and de-esser curves show the signal moving beneath them.
+- Example Tracks: a raw a cappella vocal per genre (Rock, Pop, Calm) plays through one Mic Channel's effects in place of its microphone, so you can tune them without singing.
+
+#### Presets
+
+- The Session Slot always holds your latest changes, and three Preset Slots each ship with a factory Preset you can overwrite. Everything is kept across relaunches.
+- Loading a Preset glides to it over a time you set, up to 2 s.
+
+#### Devices
+
+- lika follows your Input Device and Output Device when they change or disappear, and mutes itself when it has to fall back to devices you didn't choose.
+- At launch lika asks for microphone permission if macOS hasn't asked yet. When it's denied, an Overlay Message says lika can't hear, and its button opens Privacy & Security → Microphone.
+
+#### Updates
+
+- lika checks for a new Release at launch, downloads it in the background and installs it when you quit or restart it, never during a Session. "Check now" on the Updates page only checks: an Update it finds waits for you to click Download, then "Restart and install".
+- The Updates page shows the version, when lika last checked, the "Check automatically at launch" and "Include betas" switches, and the release notes of every newer Release.
+- If lika runs from outside Applications, an Overlay Message offers to move it there, so that it can receive Updates.]]></description>
+      <enclosure url="https://github.com/Lin-creator/lika-releases/releases/download/v1.0.0/lika-1.0.0.zip" length="4925554" type="application/octet-stream" sparkle:edSignature="6ysxFBwtNIIQj9WR+og9hEI1tWTzbuNRJ8LjBF9MHPNyXJS155kPbPpXldGKscbMuVInwwYWLUUN1T0D3M3ABw=="/>
+    </item>
+    <item>
       <title>1.0.0-beta.3</title>
       <pubDate>Tue, 27 Oct 2026 00:30:37 GMT</pubDate>
       <sparkle:version>81</sparkle:version>
