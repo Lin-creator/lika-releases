@@ -6,6 +6,19 @@
     <description>Updates for lika.</description>
     <language>en</language>
     <item>
+      <title>1.1.0</title>
+      <pubDate>Sat, 31 Oct 2026 20:09:26 GMT</pubDate>
+      <sparkle:version>90</sparkle:version>
+      <sparkle:shortVersionString>1.1.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description sparkle:format="markdown"><![CDATA[### Added
+
+- The Backing Track can pass through lika. Turn it on and choose the Backing Track Source on the Devices page, from the apps open with a Dock icon. Its music is then mixed into the Output beside the Mic Channels, with no effects or Feedback Suppressor on it and untouched by Bypass, while Mute and the master level apply to it. Turning it on or off never interrupts the microphones or adds to their Round-Trip Latency. lika remembers the app and captures it again whenever it reopens. It needs macOS 14.2 and asks once for permission to capture app audio.
+- The Backing Track Badge in the Overlay shows the music's level and sets it with a scroll or a drag; a click mutes the music alone. Presets keep the Backing Track's level.
+- The Devices page shows the latency passing the Backing Track through lika adds to the music.]]></description>
+      <enclosure url="https://github.com/Lin-creator/lika-releases/releases/download/v1.1.0/lika-1.1.0.zip" length="4952483" type="application/octet-stream" sparkle:edSignature="hAOjjYxnoTYXpjrqQebmd33yCY0r7qnu1wq3ygmDKg/zY5r78NZniwrMbsKB0hXDFGZ5SJyBoXPqsf9WNkfBCQ=="/>
+    </item>
+    <item>
       <title>1.0.0</title>
       <pubDate>Tue, 27 Oct 2026 12:32:48 GMT</pubDate>
       <sparkle:version>88</sparkle:version>
