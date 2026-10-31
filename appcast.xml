@@ -6,6 +6,41 @@
     <description>Updates for lika.</description>
     <language>en</language>
     <item>
+      <title>1.1.1</title>
+      <pubDate>Sat, 31 Oct 2026 20:34:43 GMT</pubDate>
+      <sparkle:version>135</sparkle:version>
+      <sparkle:shortVersionString>1.1.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description sparkle:format="markdown"><![CDATA[### Added
+
+- A Noise Gate, which silences a Mic Channel below a cutoff and fades the voice back in over a smoothness you set, with a live picture of where your voice sits on it. Its mix sets how far it lowers the voice.
+- A Chorus, which adds one to four voices of your own across the stereo Output, with their delay, modulation, width and mix. Its mix is also a slider in the Quick Controls.
+- A Saturator, which adds tube or tape warmth in three bands with their own intensity, split at crossovers you drag on its picture over the live mic spectrum. Its amount is also a slider in the Quick Controls.
+- Recordings: press the record button in the Overlay, or ⌃⌥R from any app, to record, and again to stop. The Overlay shows the time recorded, and a saved Recording's Overlay Message shows it in Finder.
+- On the new Recording page, choose the Stems a Recording holds, in any combination: the Output mix, each Mic Channel wet (with its effects and its own reverb), each Mic Channel dry, and the Backing Track at its own level while it passes through lika. The Output mix alone is one .m4a file. Anything more is a folder holding `Mix.m4a` and a WAV file for every other Stem, all starting on the same sample.
+- Recordings are saved in `~/Music/lika`, named by the date and time they started. A full disk, a device change or quitting lika stops the Recording and saves it.
+
+### Changed
+
+- The Effects page edits one Vocal Chain for every Mic Channel, numbered in the order your voice meets it: Noise Gate, compressor, EQ, Chorus, de-esser, Saturator. Each effect's on/off button there is also a knob for its Quick Controls slider: click it to switch the effect, scroll over it to turn the slider. The Reverb Bus has one for the reverb mix. Each effect folds down to its name, that button and Reset when you click its header. Each Mic Channel's Quick Controls are still its own, and Copy to all Mic Channels is gone.
+- The compressor now comes before the EQ, so it no longer reacts to what the EQ boosts; a Preset with both on may sound slightly different.
+- The Quick Controls sliders follow the Vocal Chain's order, Comp before EQ.
+- The Example Track plays through the first Mic Channel, with each effect on or off as you set it rather than switching the EQ, compressor, de-esser and reverb on.
+- The Feedback Suppressor now predicts howls: one still building up steadily, too quiet to hear yet, is cut before it gets loud. Howls that start suddenly are caught as before.
+- The Feedback Suppressor catches a howl that comes back as its cut lifts, or soon after, much faster, and a cut already at its deepest widens to reach a howl just beside it.
+- The Settings Window opens at General, and its sidebar now reads General, Devices, Recording, then Effects, Master, Presets, then System. Master output is now Master, and Updates is now System.
+- The Overlay sits centred at the top or bottom of the screen instead of in a corner. If you had it in a corner, it stays on that side of the screen.
+- The Overlay shows small until the mouse comes close, then grows to full size, and shrinks again when the mouse leaves.
+- Quick Controls open centred on the Overlay and as wide as it, rather than beside their Mic Badge.
+
+### Fixed
+
+- The Feedback Suppressor no longer misses a howl when another peak sits just beside it.
+- The Feedback Suppressor no longer lets a howl grow loud when the room rings at whole multiples of its frequency, or while several howls build at once. In a real room, howls are now cut long before they can be heard.
+- The Feedback Suppressor now also stops a howl set off by a knock or a shout when the gain is already past where the room howls, and a cut goes in at full depth within 50 ms.]]></description>
+      <enclosure url="https://github.com/Lin-creator/lika-releases/releases/download/v1.1.1/lika-1.1.1.zip" length="5008360" type="application/octet-stream" sparkle:edSignature="ToRgzIzEBKSDos0ZYGtIyrBa/We7kPuDM/jSMFBKZv9P7Gl01t9lIz0Yvj5p3EUUf8k8bPx+8D+KUY4NtyiDCA=="/>
+    </item>
+    <item>
       <title>1.1.0</title>
       <pubDate>Sat, 31 Oct 2026 20:09:26 GMT</pubDate>
       <sparkle:version>90</sparkle:version>
