@@ -6,6 +6,19 @@
     <description>Updates for lika.</description>
     <language>en</language>
     <item>
+      <title>1.2.1</title>
+      <pubDate>Tue, 03 Nov 2026 04:15:35 GMT</pubDate>
+      <sparkle:version>195</sparkle:version>
+      <sparkle:shortVersionString>1.2.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description sparkle:format="markdown"><![CDATA[### Added
+
+- lika has its own app icon, shown in Finder and Launchpad.
+- A phone with Phone Link can choose which Stems a Recording holds, as the Recording page does, and sees the choice change wherever it's made.
+- A phone can rename a Recording on the Mac, and its Cancel after stopping a Recording moves that Recording to the Trash, where you can put it back. A phone can't remove any other Recording.]]></description>
+      <enclosure url="https://github.com/Lin-creator/lika-releases/releases/download/v1.2.1/lika-1.2.1.zip" length="6303238" type="application/octet-stream" sparkle:edSignature="RxpXt3/udqUqQPPhKNR5DvFpsvpFOmlhqpJeCmolecu768FbThjJYno9wHqKUuytHKJfKfSYVkAoWIHIidWWCw=="/>
+    </item>
+    <item>
       <title>1.2.0</title>
       <pubDate>Tue, 03 Nov 2026 02:48:29 GMT</pubDate>
       <sparkle:version>190</sparkle:version>
