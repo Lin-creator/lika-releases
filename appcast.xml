@@ -6,6 +6,29 @@
     <description>Updates for lika.</description>
     <language>en</language>
     <item>
+      <title>1.2.0</title>
+      <pubDate>Tue, 03 Nov 2026 02:48:29 GMT</pubDate>
+      <sparkle:version>190</sparkle:version>
+      <sparkle:shortVersionString>1.2.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description sparkle:format="markdown"><![CDATA[### Added
+
+- Drag the Overlay by the pill between its circles to anywhere along any edge of the screen, or of another display, such as the top right corner: while you drag, an outline shows where it will land, turning between a row and a column, and on release it snaps to the edge it is nearest, centring itself when you let go near the middle. On the left or right edge the Overlay is a column, with its Quick Controls and Overlay Messages opening beside it. The General page's position picker has all four edges too, and centres the Overlay on the one you pick.
+- Remote control, a new page in the Settings Window, pairs phones with the lika app by QR code and lists them with Disconnect and Remove. Each new phone asks "Allow this phone?" beside the Overlay, and the Overlay shows a phone icon while Phone Link is on, lit with the number of phones connected.
+- While Room Tune measures, the Overlay Message says "Room measurement in progress", whether the measurement started on the Mac or on a phone, and it goes away when the measurement ends.
+- With Phone Link on, a phone on the same network can change the sound live, read the meters and spectrum, start and stop a Recording, apply its own Presets or save them to Preset 1, 2 or 3, and download your Recordings, Stems included, resuming after a dropped connection. Downloads pause while the Mac records. Phone Link is off until you switch it on, and with it off lika opens no network port.
+- A phone with Phone Link can measure Room Tune, cancel the measurement or delete its cuts, and follows every measurement as it runs, wherever it started. A measurement carries on if the phone that started it disconnects.
+
+### Changed
+
+- The Quick Controls are one set for every Mic Channel, as the Effects page already was: a slider or switch changes every Mic Channel, whichever Mic Badge you opened them from, and a phone shows and sets the same values. Channel Bypass, gain and Channel Mute stay each Mic Channel's own. A Preset saved with different effect settings per Mic Channel loads with Mic Channel 1's on every one.
+
+### Fixed
+
+- Measuring Room Tune ends at once when a device disconnects, saying so, or when the devices change, such as a new buffer size, and the cuts you had are kept. It used to carry on and fail later as if nothing had howled, or start over by itself.]]></description>
+      <enclosure url="https://github.com/Lin-creator/lika-releases/releases/download/v1.2.0/lika-1.2.0.zip" length="6191850" type="application/octet-stream" sparkle:edSignature="JLAemjJPX5mHpjO2nqByoi2mr6/7NCt0khlY4HgNxICpfCEaBJZKhLGsR6ahVOXDt0bhVapX/eKrXY4N4p2NCw=="/>
+    </item>
+    <item>
       <title>1.1.1</title>
       <pubDate>Sat, 31 Oct 2026 20:34:43 GMT</pubDate>
       <sparkle:version>135</sparkle:version>
